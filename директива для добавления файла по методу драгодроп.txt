@@ -1,0 +1,67 @@
+html
+<div class="column document_info" appDragDrop (filesChangeEmiter)="onFilesChange($event)"
+directive
+import { Directive, HostListener, EventEmitter, Output } from '@angular/core';
+
+
+@Directive({
+    selector: '[appDragDrop]',
+})
+
+export class DragDropDirective {
+    
+@Output() private filesChangeEmiter : EventEmitter<File[]> = new EventEmitter();
+
+    
+
+constructor() {}
+
+    
+
+@HostListener('dragover') 
+
+onDragOver() {
+        
+return false
+    
+}
+
+    
+
+@HostListener('dragenter') 
+handleDragEnter() {}
+
+    
+
+@HostListener('dragleave') 
+
+handleDragLeave() {}
+
+    
+
+@HostListener('drop', ['$event']) public onDrop(evt){
+
+        
+evt.preventDefault();
+        
+evt.stopPropagation();
+        
+let files = evt.dataTransfer.files;
+        
+if (files.length > 0) {
+            
+this.filesChangeEmiter.emit(files);
+       
+ }
+    
+}
+
+}
+js
+(filesChangeEmiter)="onFilesChange($event)"
+
+   onFilesChange(fileList : FileList) {
+        
+this.fileService.contractFileSelectProgress(fileList, true);
+    
+}
